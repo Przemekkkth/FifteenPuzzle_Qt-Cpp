@@ -4,7 +4,7 @@
 #include <QGraphicsSceneMouseEvent>
 
 GameScene::GameScene(QObject *parent)
-    : QGraphicsScene{parent}, m_game(), m_timer(new QTimer(this))
+    : QGraphicsScene{parent}, m_game(), m_timer(new QTimer(this)), m_animation(new QPropertyAnimation(this))
 {
     loadPixmap();
     setSceneRect(0, 0, m_game.RESOLUTION.width(), m_game.RESOLUTION.height());
@@ -41,10 +41,10 @@ void GameScene::init()
         {
             int n = m_game.m_grid[column][row];
             //qDebug() << "express " << (row * 4) + column ;
-
-            m_pixmapItems[(row * 4) + column].setPixmap(m_tilesPixmap[n]);
-            m_pixmapItems[(row * 4) + column].setPos(column * m_game.m_tile_width, row * m_game.m_tile_width);
-            addItem(&m_pixmapItems[(row * 4) + column]);
+            m_pixmapItems[(row * 4) + column] = new PixmapItem(this);
+            m_pixmapItems[(row * 4) + column]->setPixmap(m_tilesPixmap[n]);
+            m_pixmapItems[(row * 4) + column]->setPos(column * m_game.m_tile_width, row * m_game.m_tile_width);
+            addItem(m_pixmapItems[(row * 4) + column]);
         }
     }
 }
@@ -58,7 +58,15 @@ void GameScene::isPossibleMoveArea()
     else if(m_game.m_grid[m_clickedX - 1][m_clickedY] == 0)
     {
         qDebug() << "X is valid";
-        //m_animation.setTargetObject(m_pixmapItems[m_game.m_grid[m_clickedX][m_clickedY]]);
+        m_animation->setTargetObject(m_pixmapItems[m_game.m_grid[m_clickedX][m_clickedY]]);
+
+        m_animation->setPropertyName("posX");
+        m_animation->setDuration(2000);
+        m_animation->setStartValue(m_pixmapItems[m_game.m_grid[m_clickedX][m_clickedY]]->pos().x());
+        m_animation->setEndValue(m_pixmapItems[m_game.m_grid[m_clickedX][m_clickedY]]->pos().x() - m_game.m_tile_width);
+
+        m_animation->start();
+
     }
 
     if(m_clickedX + 1 >= Game::COUNT_OF_ELEMENTS_GRID)

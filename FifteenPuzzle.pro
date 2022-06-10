@@ -8,11 +8,13 @@ SOURCES += \
     game.cpp \
     gamescene.cpp \
     main.cpp \
+    pixmapitem.cpp \
     view.cpp
 
 HEADERS += \
     game.h \
     gamescene.h \
+    pixmapitem.h \
     view.h
 
 RESOURCES += \

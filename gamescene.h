@@ -4,6 +4,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
 #include <QPropertyAnimation>
+#include "pixmapitem.h"
 #include "game.h"
 
 class QTimer;
@@ -24,8 +25,8 @@ private:
     QPixmap m_mainTilePixmap;
     QPixmap m_tilesPixmap[16];
     QTimer* m_timer;
-    QGraphicsPixmapItem m_pixmapItems[16];
-    QPropertyAnimation m_animation;
+    PixmapItem *m_pixmapItems[16];
+    QPropertyAnimation *m_animation;
 
     int m_clickedX, m_clickedY;
 private slots:
