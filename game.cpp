@@ -11,26 +11,25 @@ Game::Game()
 
 void Game::init()
 {
-    int n=0;
-    for (int i=0;i<4;i++)
+    int number = 0;
+    for (int column = 0; column <4; column++)
     {
-        for (int j=0;j<4;j++)
+        for (int row = 0; row < 4; row++)
         {
-            n++;
-            m_grid[i][j] = n;
+            m_grid[column][row] = number;
+            number++;
         }
     }
-    int stop = 0;
 }
 
 void Game::printGrid()
 {
-    for(int i = 0; i < 4; ++i)
+    for(int column = 0; column < 4; ++column)
     {
-        for(int j = 0; j < 4; ++j)
+        for(int row = 0; row < 4; ++row)
         {
-            int n = m_grid[i][j];
-            qDebug() << "[" << i << "] [" << j << "] = " << n;
+            int number = m_grid[column][row];
+            qDebug() << "[" << column << "] [" << row << "] = " << number;
         }
     }
 }
