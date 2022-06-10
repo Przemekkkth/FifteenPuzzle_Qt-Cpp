@@ -58,15 +58,18 @@ void GameScene::isPossibleMoveArea()
     else if(m_game.m_grid[m_clickedX - 1][m_clickedY] == 0)
     {
         qDebug() << "X is valid";
-        m_animation->setTargetObject(m_pixmapItems[m_game.m_grid[m_clickedX][m_clickedY]]);
 
+        m_animation->setTargetObject(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]);
         m_animation->setPropertyName("posX");
         m_animation->setDuration(2000);
-        m_animation->setStartValue(m_pixmapItems[m_game.m_grid[m_clickedX][m_clickedY]]->pos().x());
-        m_animation->setEndValue(m_pixmapItems[m_game.m_grid[m_clickedX][m_clickedY]]->pos().x() - m_game.m_tile_width);
-
+        m_animation->setEasingCurve(QEasingCurve::InOutBounce);
+        m_animation->setStartValue(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]->pos().x());
+        m_animation->setEndValue(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]->pos().x() - m_game.m_tile_width);
         m_animation->start();
 
+        //replace in grid
+        m_game.m_grid[m_clickedX - 1][m_clickedY] = m_game.m_grid[m_clickedX][m_clickedY];
+        m_game.m_grid[m_clickedX][m_clickedY] = 0;
     }
 
     if(m_clickedX + 1 >= Game::COUNT_OF_ELEMENTS_GRID)
@@ -76,6 +79,18 @@ void GameScene::isPossibleMoveArea()
     else if(m_game.m_grid[m_clickedX + 1][m_clickedY] == 0)
     {
         qDebug() << "X is valid";
+
+        m_animation->setTargetObject(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]);
+        m_animation->setPropertyName("posX");
+        m_animation->setDuration(2000);
+        m_animation->setEasingCurve(QEasingCurve::InOutBounce);
+        m_animation->setStartValue(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]->pos().x());
+        m_animation->setEndValue(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]->pos().x() + m_game.m_tile_width);
+        m_animation->start();
+
+        //replace in grid
+        m_game.m_grid[m_clickedX + 1][m_clickedY] = m_game.m_grid[m_clickedX][m_clickedY];
+        m_game.m_grid[m_clickedX][m_clickedY] = 0;
     }
 
 
@@ -86,6 +101,18 @@ void GameScene::isPossibleMoveArea()
     else if(m_game.m_grid[m_clickedX][m_clickedY - 1] == 0)
     {
         qDebug() << "Y is valid";
+
+        m_animation->setTargetObject(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]);
+        m_animation->setPropertyName("posY");
+        m_animation->setDuration(2000);
+        m_animation->setEasingCurve(QEasingCurve::InOutBounce);
+        m_animation->setStartValue(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]->pos().y());
+        m_animation->setEndValue(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]->pos().y() - m_game.m_tile_width);
+        m_animation->start();
+
+        //replace in grid
+        m_game.m_grid[m_clickedX][m_clickedY - 1] = m_game.m_grid[m_clickedX][m_clickedY];
+        m_game.m_grid[m_clickedX][m_clickedY] = 0;
     }
 
 
@@ -96,6 +123,18 @@ void GameScene::isPossibleMoveArea()
     else if(m_game.m_grid[m_clickedX][m_clickedY + 1] == 0)
     {
         qDebug() << "Y is valid";
+
+        m_animation->setTargetObject(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]);
+        m_animation->setPropertyName("posY");
+        m_animation->setDuration(2000);
+        m_animation->setEasingCurve(QEasingCurve::InOutBounce);
+        m_animation->setStartValue(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]->pos().y());
+        m_animation->setEndValue(m_pixmapItems[(m_clickedY * Game::COUNT_OF_ELEMENTS_GRID) + m_clickedX ]->pos().y() + m_game.m_tile_width);
+        m_animation->start();
+
+        //replace in grid
+        m_game.m_grid[m_clickedX][m_clickedY + 1] = m_game.m_grid[m_clickedX][m_clickedY];
+        m_game.m_grid[m_clickedX][m_clickedY] = 0;
     }
 
 }
