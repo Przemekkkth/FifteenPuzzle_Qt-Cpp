@@ -49,6 +49,49 @@ void GameScene::init()
     }
 }
 
+void GameScene::isPossibleMoveArea()
+{
+    if(m_clickedX - 1 < 0)
+    {
+        qDebug() << "X is not valid. Less than 0";
+    }
+    else if(m_game.m_grid[m_clickedX - 1][m_clickedY] == 0)
+    {
+        qDebug() << "X is valid";
+        //m_animation.setTargetObject(m_pixmapItems[m_game.m_grid[m_clickedX][m_clickedY]]);
+    }
+
+    if(m_clickedX + 1 >= Game::COUNT_OF_ELEMENTS_GRID)
+    {
+        qDebug() << "X is not valid. Greater than 4";
+    }
+    else if(m_game.m_grid[m_clickedX + 1][m_clickedY] == 0)
+    {
+        qDebug() << "X is valid";
+    }
+
+
+    if(m_clickedY - 1 < 0)
+    {
+        qDebug() << "Y is not valid. Less than 0";
+    }
+    else if(m_game.m_grid[m_clickedX][m_clickedY - 1] == 0)
+    {
+        qDebug() << "Y is valid";
+    }
+
+
+    if(m_clickedY + 1 >= Game::COUNT_OF_ELEMENTS_GRID)
+    {
+        qDebug() << "Y is not valid. Greater than 4";
+    }
+    else if(m_game.m_grid[m_clickedX][m_clickedY + 1] == 0)
+    {
+        qDebug() << "Y is valid";
+    }
+
+}
+
 void GameScene::update()
 {
     clear();
@@ -72,8 +115,10 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_clickedX = static_cast<int>(clickedPos.x()) / m_game.m_tile_width;
         m_clickedY = static_cast<int>(clickedPos.y()) / m_game.m_tile_width;
 
-        qDebug() << "cPx " << clickedPos.x() << " cPy " << clickedPos.y();
-        qDebug() << "x " << m_clickedX << " y " << m_clickedY;
+        //qDebug() << "cPx " << clickedPos.x() << " cPy " << clickedPos.y();
+        //qDebug() << "x " << m_clickedX << " y " << m_clickedY;
+        qDebug() << m_game.m_grid[m_clickedX][m_clickedY];
+        isPossibleMoveArea();
     }
 
 }

@@ -3,6 +3,7 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsPixmapItem>
+#include <QPropertyAnimation>
 #include "game.h"
 
 class QTimer;
@@ -18,11 +19,13 @@ signals:
 private:
     void loadPixmap();
     void init();
+    void isPossibleMoveArea();
     Game m_game;
     QPixmap m_mainTilePixmap;
     QPixmap m_tilesPixmap[16];
     QTimer* m_timer;
     QGraphicsPixmapItem m_pixmapItems[16];
+    QPropertyAnimation m_animation;
 
     int m_clickedX, m_clickedY;
 private slots:

@@ -12,6 +12,7 @@ public:
     const QString PATH_TO_TILES;
     static QSize RESOLUTION;
     const float ITERATION_STEP;
+    static const int COUNT_OF_ELEMENTS_GRID;
 
     void init();
     void printGrid();
