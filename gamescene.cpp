@@ -52,16 +52,16 @@ void GameScene::move()
     int duration = 1500;
     QEasingCurve::Type easingCurveType = QEasingCurve::InOutBounce;
 
+    bool isAnimation = false;
     if(m_clickedX - 1 < 0)
     {
         qDebug() << "X - 1 is not valid. Less than 0";
-    }
+
+   }
     else if(m_game.m_grid[m_clickedX - 1][m_clickedY] == 0)
     {
         qDebug() << "X - 1 is valid";
-
-        m_isAnimationContinues = true;
-
+        isAnimation = true;
         m_moveAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
         m_moveAnimation->setPropertyName("posX");
         m_moveAnimation->setDuration(duration);
@@ -83,7 +83,7 @@ void GameScene::move()
     {
         qDebug() << "X + 1 is valid";
 
-        m_isAnimationContinues = true;
+        isAnimation = true;
 
         m_moveAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
         m_moveAnimation->setPropertyName("posX");
@@ -107,7 +107,7 @@ void GameScene::move()
     else if(m_game.m_grid[m_clickedX][m_clickedY - 1] == 0)
     {
         qDebug() << "Y is valid";
-
+        isAnimation = true;
         m_moveAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
         m_moveAnimation->setPropertyName("posY");
         m_moveAnimation->setDuration(duration);
@@ -129,7 +129,7 @@ void GameScene::move()
     else if(m_game.m_grid[m_clickedX][m_clickedY + 1] == 0)
     {
         qDebug() << "Y is valid";
-
+        isAnimation = true;
         m_moveAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
         m_moveAnimation->setPropertyName("posY");
         m_moveAnimation->setDuration(duration);
@@ -141,6 +141,11 @@ void GameScene::move()
         //replace in grid
         m_game.m_grid[m_clickedX][m_clickedY + 1] = m_game.m_grid[m_clickedX][m_clickedY];
         m_game.m_grid[m_clickedX][m_clickedY] = 0;
+    }
+
+    if(!isAnimation)
+    {
+        m_isAnimationContinues = false;
     }
 }
 
@@ -167,10 +172,10 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if(event->button() == Qt::LeftButton && !m_isAnimationContinues)
     {
+        m_isAnimationContinues = true;
         QPointF clickedPos =  event->scenePos();
         m_clickedX = static_cast<int>(clickedPos.x()) / m_game.m_tile_width;
         m_clickedY = static_cast<int>(clickedPos.y()) / m_game.m_tile_width;
-
         m_clickedNumber = m_game.m_grid[m_clickedX][m_clickedY];
         move();
     }
