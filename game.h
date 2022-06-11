@@ -2,6 +2,7 @@
 #define GAME_H
 #include <QString>
 #include <QSize>
+#include <QList>
 
 class Game
 {
@@ -16,6 +17,8 @@ public:
 
     void init();
     void printGrid();
+private:
+    QVector<int> m_numbers;
 };
 
 #endif // GAME_H

@@ -12,13 +12,18 @@ Game::Game()
 
 void Game::init()
 {
-    int number = 0;
-    for (int column = 0; column <4; column++)
+    for(int i = 0; i < 16; ++i)
+    {
+        m_numbers.push_back(i);
+    }
+    srand(time(0));
+    for (int column = 0; column < 4; column++)
     {
         for (int row = 0; row < 4; row++)
         {
-            m_grid[column][row] = number;
-            number++;
+            int index = rand()%m_numbers.size();
+            m_grid[column][row] = m_numbers.at(index);
+            m_numbers.removeAt(index);
         }
     }
 }
