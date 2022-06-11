@@ -20,24 +20,21 @@ signals:
 private:
     void loadPixmap();
     void init();
-    void isPossibleMoveArea();
+    void move();
     void updatePixmaps();
 
     Game m_game;
     QPixmap m_mainTilePixmap;
     QPixmap m_tilesPixmap[16];
-    QTimer* m_timer;
+    QTimer *m_timer;
     PixmapItem *m_pixmapItems[4][4];
-    QPropertyAnimation *m_leftAnimation, *m_rightAnimation, *m_upAnimation, *m_downAnimation;
+    QPropertyAnimation *m_moveAnimation;
 
     int m_clickedX, m_clickedY, m_clickedNumber;
-    bool m_stopClicking;
+    bool m_isAnimationContinues;
 private slots:    
 
-    void finishLeftAnim();
-    void finishRightAnim();
-    void finishUpAnim();
-    void finishDownAnim();
+    void finishMoveAnim();
     // QGraphicsScene interface
 protected:
     virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

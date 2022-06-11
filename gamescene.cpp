@@ -5,19 +5,13 @@
 #include <QKeyEvent>
 
 GameScene::GameScene(QObject *parent)
-    : QGraphicsScene{parent}, m_game(), m_timer(new QTimer(this)), m_leftAnimation(new QPropertyAnimation(this)),
-      m_rightAnimation(new QPropertyAnimation(this)), m_upAnimation(new QPropertyAnimation(this)),
-      m_downAnimation(new QPropertyAnimation(this)),
-      m_stopClicking(false)
+    : QGraphicsScene{parent}, m_game(), m_timer(new QTimer(this)), m_moveAnimation(new QPropertyAnimation(this)),
+      m_isAnimationContinues(false)
 {
     loadPixmap();
     setSceneRect(0, 0, m_game.RESOLUTION.width(), m_game.RESOLUTION.height());
-
-    //connect(m_timer, &QTimer::timeout, this, &GameScene::update);
-    //m_timer->start(m_game.ITERATION_STEP);
-
-    //update();
     init();
+    connect(m_moveAnimation, &QPropertyAnimation::finished, this, &GameScene::finishMoveAnim);
 }
 
 void GameScene::loadPixmap()
@@ -53,7 +47,7 @@ void GameScene::init()
     }
 }
 
-void GameScene::isPossibleMoveArea()
+void GameScene::move()
 {
     int duration = 1500;
     QEasingCurve::Type easingCurveType = QEasingCurve::InOutBounce;
@@ -66,21 +60,19 @@ void GameScene::isPossibleMoveArea()
     {
         qDebug() << "X - 1 is valid";
 
-        m_stopClicking = true;
+        m_isAnimationContinues = true;
 
-        m_leftAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
-        m_leftAnimation->setPropertyName("posX");
-        m_leftAnimation->setDuration(duration);
-        m_leftAnimation->setEasingCurve(easingCurveType);
-        m_leftAnimation->setStartValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().x());
-        m_leftAnimation->setEndValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().x() - m_game.m_tile_width);
-        m_leftAnimation->start();
+        m_moveAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
+        m_moveAnimation->setPropertyName("posX");
+        m_moveAnimation->setDuration(duration);
+        m_moveAnimation->setEasingCurve(easingCurveType);
+        m_moveAnimation->setStartValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().x());
+        m_moveAnimation->setEndValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().x() - m_game.m_tile_width);
+        m_moveAnimation->start();
 
         //replace in grid
         m_game.m_grid[m_clickedX - 1][m_clickedY] = m_game.m_grid[m_clickedX][m_clickedY];
         m_game.m_grid[m_clickedX][m_clickedY] = 0;
-        //////////////////////////////////////////
-        connect(m_leftAnimation, &QPropertyAnimation::finished, this, &GameScene::finishLeftAnim, Qt::UniqueConnection);
     }
 
     if(m_clickedX + 1 >= Game::COUNT_OF_ELEMENTS_GRID)
@@ -91,22 +83,20 @@ void GameScene::isPossibleMoveArea()
     {
         qDebug() << "X + 1 is valid";
 
-        m_stopClicking = true;
+        m_isAnimationContinues = true;
 
-        m_rightAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
-        m_rightAnimation->setPropertyName("posX");
-        m_rightAnimation->setDuration(duration);
-        m_rightAnimation->setEasingCurve(easingCurveType);
-        m_rightAnimation->setStartValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().x());
-        m_rightAnimation->setEndValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().x() + m_game.m_tile_width);
-        m_rightAnimation->start();
+        m_moveAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
+        m_moveAnimation->setPropertyName("posX");
+        m_moveAnimation->setDuration(duration);
+        m_moveAnimation->setEasingCurve(easingCurveType);
+        m_moveAnimation->setStartValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().x());
+        m_moveAnimation->setEndValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().x() + m_game.m_tile_width);
+        m_moveAnimation->start();
 
         //replace in grid
         m_game.m_grid[m_clickedX + 1][m_clickedY] = m_game.m_grid[m_clickedX][m_clickedY];
         m_game.m_grid[m_clickedX][m_clickedY] = 0;
 
-        ///////////////////////////////////////////
-        connect(m_rightAnimation, &QPropertyAnimation::finished, this, &GameScene::finishRightAnim, Qt::UniqueConnection);
     }
 
 
@@ -118,19 +108,17 @@ void GameScene::isPossibleMoveArea()
     {
         qDebug() << "Y is valid";
 
-        m_upAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
-        m_upAnimation->setPropertyName("posY");
-        m_upAnimation->setDuration(duration);
-        m_upAnimation->setEasingCurve(easingCurveType);
-        m_upAnimation->setStartValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().y());
-        m_upAnimation->setEndValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().y() - m_game.m_tile_width);
-        m_upAnimation->start();
+        m_moveAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
+        m_moveAnimation->setPropertyName("posY");
+        m_moveAnimation->setDuration(duration);
+        m_moveAnimation->setEasingCurve(easingCurveType);
+        m_moveAnimation->setStartValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().y());
+        m_moveAnimation->setEndValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().y() - m_game.m_tile_width);
+        m_moveAnimation->start();
 
         //replace in grid
         m_game.m_grid[m_clickedX][m_clickedY - 1] = m_game.m_grid[m_clickedX][m_clickedY];
         m_game.m_grid[m_clickedX][m_clickedY] = 0;
-
-        connect(m_upAnimation, &QPropertyAnimation::finished, this, &GameScene::finishUpAnim, Qt::UniqueConnection);
     }
 
 
@@ -142,19 +130,17 @@ void GameScene::isPossibleMoveArea()
     {
         qDebug() << "Y is valid";
 
-        m_downAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
-        m_downAnimation->setPropertyName("posY");
-        m_downAnimation->setDuration(duration);
-        m_downAnimation->setEasingCurve(easingCurveType);
-        m_downAnimation->setStartValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().y());
-        m_downAnimation->setEndValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().y() + m_game.m_tile_width);
-        m_downAnimation->start();
+        m_moveAnimation->setTargetObject(m_pixmapItems[m_clickedX][m_clickedY]);
+        m_moveAnimation->setPropertyName("posY");
+        m_moveAnimation->setDuration(duration);
+        m_moveAnimation->setEasingCurve(easingCurveType);
+        m_moveAnimation->setStartValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().y());
+        m_moveAnimation->setEndValue(m_pixmapItems[m_clickedX][m_clickedY]->pos().y() + m_game.m_tile_width);
+        m_moveAnimation->start();
 
         //replace in grid
         m_game.m_grid[m_clickedX][m_clickedY + 1] = m_game.m_grid[m_clickedX][m_clickedY];
         m_game.m_grid[m_clickedX][m_clickedY] = 0;
-
-        connect(m_downAnimation, &QPropertyAnimation::finished, this, &GameScene::finishDownAnim);
     }
 }
 
@@ -171,47 +157,22 @@ void GameScene::updatePixmaps()
     }
 }
 
-void GameScene::finishLeftAnim()
+void GameScene::finishMoveAnim()
 {
-    //m_pixmapItems[m_clickedX][m_clickedY]->setPosX(m_pixmapItems[m_clickedX][m_clickedY]->pos().x() + m_game.m_tile_width);
     updatePixmaps();
-    m_stopClicking = false;
-}
-
-void GameScene::finishRightAnim()
-{
-    //m_pixmapItems[m_clickedX][m_clickedY]->setPosX(m_pixmapItems[m_clickedX][m_clickedY]->pos().x() - m_game.m_tile_width);
-    updatePixmaps();
-    m_stopClicking = false;
-}
-
-void GameScene::finishUpAnim()
-{
-    //m_pixmapItems[m_clickedX][m_clickedY]->setPosY(m_pixmapItems[m_clickedX][m_clickedY]->pos().y() + m_game.m_tile_width);
-    updatePixmaps();
-    m_stopClicking = false;
-}
-
-void GameScene::finishDownAnim()
-{
-    //m_pixmapItems[m_clickedX][m_clickedY]->setPosY(m_pixmapItems[m_clickedX][m_clickedY]->pos().y() - m_game.m_tile_width);
-    updatePixmaps();
-    m_stopClicking = false;
+    m_isAnimationContinues = false;
 }
 
 void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if(event->button() == Qt::LeftButton && !m_stopClicking)
+    if(event->button() == Qt::LeftButton && !m_isAnimationContinues)
     {
         QPointF clickedPos =  event->scenePos();
         m_clickedX = static_cast<int>(clickedPos.x()) / m_game.m_tile_width;
         m_clickedY = static_cast<int>(clickedPos.y()) / m_game.m_tile_width;
 
-        //qDebug() << "cPx " << clickedPos.x() << " cPy " << clickedPos.y();
-        //qDebug() << "x " << m_clickedX << " y " << m_clickedY;
-        qDebug() << m_game.m_grid[m_clickedX][m_clickedY];
         m_clickedNumber = m_game.m_grid[m_clickedX][m_clickedY];
-        isPossibleMoveArea();
+        move();
     }
 
 }
@@ -219,7 +180,7 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void GameScene::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
-        case Qt::Key_P:
+    case Qt::Key_P:
     {
         qDebug() << "Printed ";
         m_game.printGrid();
