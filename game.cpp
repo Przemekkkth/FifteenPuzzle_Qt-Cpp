@@ -8,7 +8,7 @@ Game::Game()
 {
     //init();
     idealInit();
-    //printGrid();
+    printGrid();
 }
 
 void Game::init()
