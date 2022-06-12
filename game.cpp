@@ -6,7 +6,7 @@ const int Game::COUNT_OF_ELEMENTS_GRID = 4;
 Game::Game()
     : m_tile_width(64), PATH_TO_TILES(":/images/tiles.png"), PATH_TO_BG(":/images/bg.png"), ITERATION_STEP(1000.0f/60.0f)
 {
-    init();
+    //init();
     idealInit();
     //printGrid();
 }
@@ -34,16 +34,16 @@ void Game::init()
 void Game::idealInit()
 {
     m_numbers.clear();
-    for(int i = 0; i < 15; ++i)
+    for(int i = 1; i <= 15; ++i)
     {
-        m_numbers.push_back(i+1);
+        m_numbers.push_back(i);
     }
     m_numbers.push_back(0);
     for (int column = 0; column < 4; column++)
     {
         for (int row = 0; row < 4; row++)
         {
-            m_grid[row][column] = (column * Game::COUNT_OF_ELEMENTS_GRID) + row;
+            m_grid[row][column] = m_numbers.at( (column * Game::COUNT_OF_ELEMENTS_GRID) + row);
         }
     }
 }
