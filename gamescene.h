@@ -26,6 +26,7 @@ private:
     Game m_game;
     QPixmap m_mainTilePixmap;
     QPixmap m_tilesPixmap[16];
+    QPixmap m_bgPixmap;
     QTimer *m_timer;
     PixmapItem *m_pixmapItems[4][4];
     QPropertyAnimation *m_moveAnimation;

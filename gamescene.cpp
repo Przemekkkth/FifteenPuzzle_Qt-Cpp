@@ -28,11 +28,23 @@ void GameScene::loadPixmap()
     {
         m_tilesPixmap[i] = m_mainTilePixmap.copy(i*m_game.m_tile_width, 0, m_game.m_tile_width, m_game.m_tile_width);
     }
+
+    if(m_bgPixmap.load(m_game.PATH_TO_BG))
+    {
+        qDebug() << "BgPixmap is loaded successfully";
+    }
+    else
+    {
+        qDebug() << "BgPixmap is not loaded successfully";
+    }
 }
 
 void GameScene::init()
 {
     clear();
+    QGraphicsPixmapItem *bgItem = new QGraphicsPixmapItem(m_bgPixmap);
+    bgItem->setZValue(-1);
+    addItem(bgItem);
     for (int column = 0; column < 4; column++)
     {
         for (int row = 0; row < 4; row++)
