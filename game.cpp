@@ -59,3 +59,16 @@ void Game::printGrid()
         }
     }
 }
+
+bool Game::checkPossibleVictory()
+{
+    if(m_grid[0][0] == 1 && m_grid[1][0] == 2 && m_grid[2][0] == 3 && m_grid[3][0] == 4
+            && m_grid[0][1] == 5 && m_grid[1][1] == 6 && m_grid[2][1] == 7 && m_grid[3][1] == 8
+            && m_grid[0][2] == 9 && m_grid[1][2] == 10 && m_grid[2][2] == 11 && m_grid[3][2] == 12
+            && m_grid[0][3] == 13 && m_grid[1][3] == 14 && m_grid[2][3] == 15 && m_grid[3][3] == 0
+            )
+    {
+        return true;
+    }
+    return false;
+}

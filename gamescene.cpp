@@ -190,6 +190,14 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_clickedY = static_cast<int>(clickedPos.y()) / m_game.m_tile_width;
         m_clickedNumber = m_game.m_grid[m_clickedX][m_clickedY];
         move();
+        if( m_game.checkPossibleVictory() )
+        {
+            qDebug() << "VICTORY";
+        }
+        else
+        {
+            qDebug() << "NOT VICTORY";
+        }
     }
 
 }

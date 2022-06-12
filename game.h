@@ -20,6 +20,7 @@ public:
     void idealInit();
     void initWin();
     void printGrid();
+    bool checkPossibleVictory();
 private:
     QVector<int> m_numbers;
 };
