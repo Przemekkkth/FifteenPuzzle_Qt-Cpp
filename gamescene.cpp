@@ -3,6 +3,8 @@
 #include <QTimer>
 #include <QGraphicsSceneMouseEvent>
 #include <QKeyEvent>
+#include <QDir>
+#include <QPainter>
 
 GameScene::GameScene(QObject *parent)
     : QGraphicsScene{parent}, m_game(), m_timer(new QTimer(this)), m_moveAnimation(new QPropertyAnimation(this)),
@@ -186,6 +188,19 @@ void GameScene::updatePixmaps()
     }
 }
 
+void GameScene::renderScene()
+{
+    static int index = 0;
+    QString fileName = QDir::currentPath() + QDir::separator() + "screen" + QString::number(index++) + ".png";
+    QRect rect = sceneRect().toAlignedRect();
+    QImage image(rect.size(), QImage::Format_ARGB32);
+    image.fill(Qt::transparent);
+    QPainter painter(&image);
+    render(&painter);
+    image.save(fileName);
+    qDebug() << "saved " << fileName;
+}
+
 void GameScene::finishMoveAnim()
 {
     updatePixmaps();
@@ -222,8 +237,8 @@ void GameScene::keyPressEvent(QKeyEvent *event)
     switch (event->key()) {
     case Qt::Key_P:
     {
-        qDebug() << "Printed ";
-        m_game.printGrid();
+        //qDebug() << "Printed ";
+        //m_game.printGrid();
     }
         break;
     case Qt::Key_R:
@@ -237,7 +252,13 @@ void GameScene::keyPressEvent(QKeyEvent *event)
             }
         }
         break;
+    case Qt::Key_Z:
+    {
+        //renderScene();
     }
+        break;
+    }
+
 
     QGraphicsScene::keyPressEvent(event);
 }

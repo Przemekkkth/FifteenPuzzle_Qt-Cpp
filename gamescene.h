@@ -22,6 +22,7 @@ private:
     void init();
     void move();
     void updatePixmaps();
+    void renderScene();
 
     Game m_game;
     QPixmap m_mainTilePixmap;
