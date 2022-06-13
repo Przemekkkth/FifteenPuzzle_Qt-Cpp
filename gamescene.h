@@ -27,12 +27,15 @@ private:
     QPixmap m_mainTilePixmap;
     QPixmap m_tilesPixmap[16];
     QPixmap m_bgPixmap;
+    QPixmap m_bgVictoryPixmap;
     QTimer *m_timer;
     PixmapItem *m_pixmapItems[4][4];
     QPropertyAnimation *m_moveAnimation;
 
+    QGraphicsPixmapItem *m_victoryBgItem;
     int m_clickedX, m_clickedY, m_clickedNumber;
     bool m_isAnimationContinues;
+
 private slots:    
 
     void finishMoveAnim();

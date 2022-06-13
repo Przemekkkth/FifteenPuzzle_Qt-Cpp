@@ -4,10 +4,11 @@ QSize Game::RESOLUTION = QSize(256, 256);
 const int Game::COUNT_OF_ELEMENTS_GRID = 4;
 
 Game::Game()
-    : m_tile_width(64), PATH_TO_TILES(":/images/tiles.png"), PATH_TO_BG(":/images/bg.png"), ITERATION_STEP(1000.0f/60.0f)
+    : m_tile_width(64), PATH_TO_TILES(":/images/tiles.png"), PATH_TO_BG(":/images/bg.png"), PATH_TO_VICTORY_BG(":/images/bg_victory.png"), ITERATION_STEP(1000.0f/60.0f),
+      m_isVictoryState(false)
 {
-    //init();
-    idealInit();
+    init();
+    //idealInit();
     printGrid();
 }
 

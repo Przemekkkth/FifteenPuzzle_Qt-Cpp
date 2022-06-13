@@ -37,6 +37,15 @@ void GameScene::loadPixmap()
     {
         qDebug() << "BgPixmap is not loaded successfully";
     }
+
+    if(m_bgVictoryPixmap.load(m_game.PATH_TO_VICTORY_BG))
+    {
+        qDebug() << "BgVictoryPixmap is loaded successfully";
+    }
+    else
+    {
+        qDebug() << "BgVictoryPixmap is not loaded successfully";
+    }
 }
 
 void GameScene::init()
@@ -45,6 +54,9 @@ void GameScene::init()
     QGraphicsPixmapItem *bgItem = new QGraphicsPixmapItem(m_bgPixmap);
     bgItem->setZValue(-1);
     addItem(bgItem);
+
+    m_victoryBgItem = new QGraphicsPixmapItem(m_bgVictoryPixmap.scaled(Game::RESOLUTION.width(), Game::RESOLUTION.height()));
+
     for (int column = 0; column < 4; column++)
     {
         for (int row = 0; row < 4; row++)
@@ -178,6 +190,17 @@ void GameScene::finishMoveAnim()
 {
     updatePixmaps();
     m_isAnimationContinues = false;
+    if( m_game.checkPossibleVictory() )
+    {
+        qDebug() << "VICTORY";
+        addItem(m_victoryBgItem);
+        m_game.m_isVictoryState = true;
+        m_isAnimationContinues = true;
+    }
+    else
+    {
+        qDebug() << "NOT VICTORY";
+    }
 }
 
 void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -190,14 +213,6 @@ void GameScene::mousePressEvent(QGraphicsSceneMouseEvent *event)
         m_clickedY = static_cast<int>(clickedPos.y()) / m_game.m_tile_width;
         m_clickedNumber = m_game.m_grid[m_clickedX][m_clickedY];
         move();
-        if( m_game.checkPossibleVictory() )
-        {
-            qDebug() << "VICTORY";
-        }
-        else
-        {
-            qDebug() << "NOT VICTORY";
-        }
     }
 
 }
@@ -211,6 +226,18 @@ void GameScene::keyPressEvent(QKeyEvent *event)
         m_game.printGrid();
     }
         break;
+    case Qt::Key_R:
+        {
+            if(m_game.m_isVictoryState)
+            {
+                removeItem(m_victoryBgItem);
+                m_isAnimationContinues = false;
+                m_game.init();
+                updatePixmaps();
+            }
+        }
+        break;
     }
+
     QGraphicsScene::keyPressEvent(event);
 }
