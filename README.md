@@ -22,4 +22,4 @@ qmake && make
 ## Addons
 * [Qt](https://www.qt.io/) - Cross-Platform software for embedded & desktop
 * [Video](https://youtu.be/EBays-axBgk) - gameplay
-* [Play online](https://przemekkkth.github.io/fifteenpuzzle/index.html) - game hosted on GitHub
+* [Play online](https://przemekkkth.github.io/assets/games/fifteenpuzzle/index.html) - game hosted on GitHub
